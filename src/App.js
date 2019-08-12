@@ -51,10 +51,21 @@ function Dashboard(props){
 
   if(props.currentPoke != null)
   {
+    console.log(props.currentPoke);
+    const listTypes = props.currentPoke['types'].map((type, index) =>
+      <li className="typeItem" key={index}><span className={type['type']['name'] + " typeTitle"}>{type['type']['name']}</span></li>
+    );
+
     return(
       <div className = "dashBoard">
-        <h1>{props.currentPoke['name'].charAt(0).toUpperCase() + props.currentPoke['name'].slice(1).toLowerCase()}</h1>
-        <img alt={props.currentPoke['name'].charAt(0).toUpperCase() + props.currentPoke['name'].slice(1).toLowerCase()} src={props.currentPoke['sprites']['front_default']}></img>
+        <img alt={props.currentName} src={props.currentPoke['sprites']['front_default']}></img>
+        <h1>#{props.currentPoke['id']} {props.currentName}</h1>
+        <h2>Type{(listTypes.length > 1) ? "s" : ""}</h2>
+        <ul className = "pokeType">
+          {listTypes}
+        </ul>
+        <h2>Height: {(props.currentPoke['height']/3.048).toFixed(2)} ft</h2>
+        <h2>Weight: {(props.currentPoke['weight']/4.536).toFixed(2)} lbs</h2>
       </div>
     );
   }
@@ -116,7 +127,7 @@ function App() {
   return (
     <div className="App">
       <SearchBar currentPoke={currentPoke} pokeNames ={pokeNames} currentSearch={currentSearch} updateCurrent={(newSearch) => setCurrentSearch(newSearch)} />
-      <Dashboard currentPoke={currentPoke} />
+      <Dashboard currentPoke={currentPoke} currentName = {(currentPoke != null) ? currentPoke['name'].charAt(0).toUpperCase() + currentPoke['name'].slice(1).toLowerCase() : ""} />
     </div>
   );
 }
